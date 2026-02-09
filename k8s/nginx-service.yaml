@@ -1,0 +1,20 @@
+# Service do Nginx - Web Solutions Ltda.
+# Este manifesto expõe o Nginx na porta 8080
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  labels:
+    app: nginx
+    project: web-solutions
+spec:
+  type: NodePort  # Permite acesso externo ao cluster
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80          # Porta interna do serviço
+    targetPort: 80    # Porta do container
+    nodePort: 30080   # Porta exposta no nó (30000-32767)
+    # Para acessar via localhost:8080, usar port-forward ou LoadBalancer

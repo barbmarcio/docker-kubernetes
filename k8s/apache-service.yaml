@@ -1,0 +1,20 @@
+# Service do Apache HTTPD - Web Solutions Ltda.
+# Este manifesto expõe o Apache na porta 8081
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache-service
+  labels:
+    app: apache
+    project: web-solutions
+spec:
+  type: NodePort  # Permite acesso externo ao cluster
+  selector:
+    app: apache
+  ports:
+  - protocol: TCP
+    port: 80          # Porta interna do serviço
+    targetPort: 80    # Porta do container
+    nodePort: 30081   # Porta exposta no nó (30000-32767)
+    # Para acessar via localhost:8081, usar port-forward ou LoadBalancer

@@ -1,0 +1,45 @@
+# Deployment do Nginx - Web Solutions Ltda.
+# Este manifesto define como o Kubernetes deve gerenciar os pods do Nginx
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+    project: web-solutions
+spec:
+  replicas: 2  # Número de réplicas para alta disponibilidade
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+        project: web-solutions
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine  # Imagem otimizada baseada em Alpine
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 3
